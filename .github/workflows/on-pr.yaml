@@ -6,9 +6,7 @@ on:
       - main
 
 jobs:
-  launch_environment:
-    name: Launch Environment
-
+  migrate:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,30 +18,15 @@ jobs:
         shell: bash
         run: docker-compose up -d
 
-  migrate:
-    name: MongoDB Migration
-    needs: launch_environment
-    uses: ./.github/workflows/database-migration.yaml
-    with:
-      dbHost: "localhost"
-      dbPort: "27017"
-      dbName: "test"
-    secrets:
-      DB_USERNAME: "root"
-      DB_PASSWORD: "p@ssw0rd"
-  
-  teardown_environment:
-    name: Teardown Environment
-
-    needs: migrate
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
+      - name: Migrate MongoDB
+        uses: ./.github/actions/database-migration
         with:
-          fetch-depth: 2
-  
+          dbHost: "localhost"
+          dbPort: "27017"
+        env:
+          DB_USERNAME: "root"
+          DB_PASSWORD: "p@ssw0rd"
+
       - name: Teardown local MongoDB
         if: always()
         shell: bash
