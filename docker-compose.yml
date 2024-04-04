@@ -1,0 +1,21 @@
+version: '3.7'
+
+networks:
+  default:
+    name: migrations
+
+services:
+  local-db:
+    image: mongodb/mongodb-community-server:7.0.5-ubi8
+    networks:
+      - default
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=p@ssw0rd
+    volumes:
+      - localdbdata:/data/db
+
+volumes:
+  localdbdata:
