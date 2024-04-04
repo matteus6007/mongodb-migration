@@ -1,0 +1,50 @@
+name: Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  launch_environment:
+    name: Launch Environment
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+  
+      - name: Launch local MongoDB
+        shell: bash
+        run: docker-compose up -d
+
+  migrate:
+    name: MongoDB Migration
+    needs: launch_environment
+    uses: ./.github/workflows/database-migration.yaml
+    with:
+      dbHost: "localhost"
+      dbPort: "27017"
+      dbName: "test"
+    secrets:
+      DB_USERNAME: "root"
+      DB_PASSWORD: "p@ssw0rd"
+  
+  teardown_environment:
+    name: Teardown Environment
+
+    needs: migrate
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+  
+      - name: Teardown local MongoDB
+        if: always()
+        shell: bash
+        run: docker-compose down -v --rmi local --remove-orphans
