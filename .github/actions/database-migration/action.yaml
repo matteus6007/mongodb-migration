@@ -17,9 +17,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Mask Password
+      run: echo "::add-mask::${{ inputs.DB_PASSWORD }}"
+
     - uses: actions/checkout@v3
       with:
-        fetch-depth: 2
+        fetch-depth: 2        
 
     - name: Setup Flyway
       shell: bash
