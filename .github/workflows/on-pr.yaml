@@ -23,7 +23,6 @@ jobs:
         with:
           dbHost: "localhost"
           dbPort: "27017"
-        env:
           DB_USERNAME: "root"
           DB_PASSWORD: "p@ssw0rd"
 
