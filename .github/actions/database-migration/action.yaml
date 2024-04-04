@@ -7,10 +7,6 @@ inputs:
   dbPort:
     required: true
     type: string
-  dbName:
-    required: false
-    type: string
-    default: "test"
   DB_USERNAME:
     required: true
     type: string
@@ -34,10 +30,10 @@ runs:
       shell: bash
       env:
         FLYWAY_DRIVER: com.dbschema.MongoJdbcDriver
-        FLYWAY_URL: jdbc:mongodb://${{ inputs.dbHost }}:${{ inputs.dbPort }}/${{ inputs.dbName }}
+        FLYWAY_URL: jdbc:mongodb://${{ inputs.dbHost }}:${{ inputs.dbPort }}
         FLYWAY_USER: ${{ inputs.DB_USERNAME }}
         FLYWAY_PASSWORD: ${{ inputs.DB_PASSWORD }}
         FLYWAY_LOCATIONS: filesystem:./db/js
         FLYWAY_SQL_MIGRATION_SUFFIXES: .js
       run: |
-        flyway migrate info  
+        flyway migrate info

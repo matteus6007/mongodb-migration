@@ -15,7 +15,6 @@ jobs:
           fetch-depth: 2
   
       - name: Launch local MongoDB
-        shell: bash
         run: docker-compose up -d
 
       - name: Migrate MongoDB
@@ -28,5 +27,4 @@ jobs:
 
       - name: Teardown local MongoDB
         if: always()
-        shell: bash
         run: docker-compose down -v --rmi local --remove-orphans
