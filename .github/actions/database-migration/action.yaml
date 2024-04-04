@@ -26,10 +26,12 @@ runs:
         fetch-depth: 2
 
     - name: Setup Flyway
+      shell: bash
       run: |
         wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.11.0/flyway-commandline-10.11.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.11.0/flyway /usr/local/bin 
   
     - name: Run Flyway Migrations
+      shell: bash
       env:
         FLYWAY_DRIVER: com.dbschema.MongoJdbcDriver
         FLYWAY_URL: jdbc:mongodb://${{ inputs.dbHost }}:${{ inputs.dbPort }}/${{ inputs.dbName }}
