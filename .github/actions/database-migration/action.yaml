@@ -18,6 +18,7 @@ runs:
   using: "composite"
   steps:
     - name: Mask Password
+      shell: bash
       run: echo "::add-mask::${{ inputs.DB_PASSWORD }}"
 
     - uses: actions/checkout@v3
