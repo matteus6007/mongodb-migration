@@ -1,0 +1,30 @@
+name: Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+  
+      - name: Launch local MongoDB
+        run: docker-compose up -d
+
+      - name: Migrate MongoDB
+        uses: ./.github/actions/database-migration
+        with:
+          dbHost: "localhost"
+          dbPort: "27017"
+          DB_USERNAME: "root"
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+      - name: Teardown local MongoDB
+        if: always()
+        run: docker-compose down -v --rmi local --remove-orphans

@@ -1,0 +1,43 @@
+name: Database Migration
+
+inputs:
+  flywayVersion:
+    required: false
+    type: string
+    default: "10.11.0"
+  dbHost:
+    required: true
+    type: string
+  dbPort:
+    required: true
+    type: string
+  DB_USERNAME:
+    required: true
+    type: string
+  DB_PASSWORD:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    - name: Setup Flyway
+      shell: bash
+      run: |
+        wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/${{ inputs.flywayVersion }}/flyway-commandline-${{ inputs.flywayVersion }}-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-${{ inputs.flywayVersion }}/flyway /usr/local/bin 
+  
+    - name: Run Flyway Migrations
+      shell: bash
+      env:
+        FLYWAY_DRIVER: com.dbschema.MongoJdbcDriver
+        FLYWAY_URL: jdbc:mongodb://${{ inputs.dbHost }}:${{ inputs.dbPort }}
+        FLYWAY_USER: ${{ inputs.DB_USERNAME }}
+        FLYWAY_PASSWORD: ${{ inputs.DB_PASSWORD }}
+        FLYWAY_LOCATIONS: filesystem:./db/js
+        FLYWAY_SQL_MIGRATION_SUFFIXES: .js
+      run: |
+        flyway migrate info

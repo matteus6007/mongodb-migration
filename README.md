@@ -26,7 +26,7 @@ docker run --network migrations --rm -v ${pwd}/db/js:/flyway/sql -v ${pwd}/db/co
 https://documentation.red-gate.com/flyway/flyway-cli-and-api/usage/command-line
 
 ```shell
-flyway -url=jdbc:mongodb://localhost:27017/ -configFiles="./db/config/local/flyway.conf" migrate info
+flyway -url=jdbc:mongodb://localhost:27017 -configFiles="./db/config/local/flyway.conf" migrate info
 ```
 
 ### Github Actions
