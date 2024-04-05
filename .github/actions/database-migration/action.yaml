@@ -17,13 +17,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Mask Password
-      shell: bash
-      run: |
-        MASKED_DB_PASSWORD=$(jq -r '.inputs.DB_PASSWORD' $GITHUB_EVENT_PATH)
-        echo ::add-mask::$MASKED_DB_PASSWORD
-        echo MASKED_DB_PASSWORD=$MASKED_DB_PASSWORD >> $GITHUB_ENV
-
     - uses: actions/checkout@v3
       with:
         fetch-depth: 2
@@ -39,7 +32,7 @@ runs:
         FLYWAY_DRIVER: com.dbschema.MongoJdbcDriver
         FLYWAY_URL: jdbc:mongodb://${{ inputs.dbHost }}:${{ inputs.dbPort }}
         FLYWAY_USER: ${{ inputs.DB_USERNAME }}
-        FLYWAY_PASSWORD: ${{ env.MASKED_DB_PASSWORD }}
+        FLYWAY_PASSWORD: ${{ inputs.DB_PASSWORD }}
         FLYWAY_LOCATIONS: filesystem:./db/js
         FLYWAY_SQL_MIGRATION_SUFFIXES: .js
       run: |

@@ -23,7 +23,7 @@ jobs:
           dbHost: "localhost"
           dbPort: "27017"
           DB_USERNAME: "root"
-          DB_PASSWORD: "p@ssw0rd"
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Teardown local MongoDB
         if: always()
