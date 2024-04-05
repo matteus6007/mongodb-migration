@@ -6,7 +6,9 @@ networks:
 
 services:
   local-db:
-    image: mongodb/mongodb-community-server:7.0.5-ubi8
+    image: mongo:7.0.8
+    container_name: localdb
+    restart: always
     networks:
       - default
     ports:
@@ -16,6 +18,8 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=p@ssw0rd
     volumes:
       - localdbdata:/data/db
+      - ./mongo-entrypoint/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    command: [--auth]
 
 volumes:
   localdbdata:
