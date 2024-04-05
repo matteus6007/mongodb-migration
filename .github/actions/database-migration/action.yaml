@@ -1,6 +1,10 @@
 name: Database Migration
 
 inputs:
+  flywayVersion:
+    required: false
+    type: string
+    default: "10.11.0"
   dbHost:
     required: true
     type: string
@@ -24,7 +28,7 @@ runs:
     - name: Setup Flyway
       shell: bash
       run: |
-        wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.11.0/flyway-commandline-10.11.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.11.0/flyway /usr/local/bin 
+        wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/${{ inputs.flywayVersion }}/flyway-commandline-${{ inputs.flywayVersion }}-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-${{ inputs.flywayVersion }}/flyway /usr/local/bin 
   
     - name: Run Flyway Migrations
       shell: bash
