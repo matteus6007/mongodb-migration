@@ -22,19 +22,21 @@ Examples can be found at https://www.mongodb.com/docs/mongodb-shell/write-script
 
 ### Docker
 
+https://hub.docker.com/r/redgate/flyway
+
 ```shell
-docker run --network migrations --rm -v ${pwd}/db/js:/flyway/sql -v ${pwd}/db/config/local:/flyway/conf flyway/flyway:10.11.0 migrate info
+docker run --network migrations --rm -v ${pwd}/db/js:/flyway/sql -v ${pwd}/db/config/local:/flyway/conf redgate/flyway:10.11.0 migrate info
 ```
 
 > [!NOTE]
-> Currently throws error `No database found to handle jdbc:mongodb://localhost:27017`.
+> https://hub.docker.com/r/flyway/flyway docker image throws error `No database found to handle jdbc:mongodb://localhost:27017` - tested with version `10.11.0`.
 
 ### CLI
 
 https://documentation.red-gate.com/flyway/flyway-cli-and-api/usage/command-line
 
 ```shell
-flyway -url=jdbc:mongodb://localhost:27017/test -configFiles="./db/config/local/flyway.conf" migrate info
+flyway -url=jdbc:mongodb://localhost:27017/test -locations=filesystem:./db/js -configFiles="./db/config/local/flyway.conf" migrate info
 ```
 
 ### Github Actions
