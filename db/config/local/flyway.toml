@@ -1,0 +1,12 @@
+[environments.default]
+driver = "com.dbschema.MongoJdbcDriver"
+url = "jdbc:mongodb://localdb:27017/test"
+user = "dev_user"
+password = "dev_p@ssw0rd"
+
+[flyway]
+sqlMigrationSuffixes = [".js"]
+# ensure schema history table is created for a pre-existing database
+baselineOnMigrate = true
+# reset schema version
+baselineVersion = 0.0
