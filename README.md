@@ -18,25 +18,22 @@ docker-compose down -v --rmi local --remove-orphans
 
 Using [Flyway](https://documentation.red-gate.com/fd/tutorial-using-mongodb-with-flyway-225609601.html) to migrate [MongoDB](https://documentation.red-gate.com/fd/mongodb-225608320.html) scripts.
 
-Examples can be found at https://www.mongodb.com/docs/mongodb-shell/write-scripts/ and https://www.mongodb.com/docs/manual/reference/method/.
+Example scripts can be found at https://www.mongodb.com/docs/mongodb-shell/write-scripts/ and https://www.mongodb.com/docs/manual/reference/method/.
 
-### Docker
+### Docker Compose
 
-https://hub.docker.com/r/redgate/flyway
+[Docker Image](https://hub.docker.com/r/redgate/flyway)
 
 ```shell
-docker run --network migrations --rm -v ${pwd}/db/js:/flyway/sql -v ${pwd}/db/config/local:/flyway/conf redgate/flyway:10.11.0 migrate info
+docker-compose -f docker-compose.migrate.yml up
 ```
-
-> [!NOTE]
-> https://hub.docker.com/r/flyway/flyway docker image throws error `No database found to handle jdbc:mongodb://localhost:27017` - tested with version `10.11.0`.
 
 ### CLI
 
 https://documentation.red-gate.com/flyway/flyway-cli-and-api/usage/command-line
 
 ```shell
-flyway -url=jdbc:mongodb://localhost:27017/test -locations=filesystem:./db/js -configFiles="./db/config/local/flyway.conf" migrate info
+flyway -url=jdbc:mongodb://localhost:27017/test -locations=filesystem:./db/js -configFiles="./db/config/local/flyway.toml" migrate info
 ```
 
 ### Github Actions

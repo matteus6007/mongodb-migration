@@ -1,0 +1,18 @@
+version: '3.7'
+
+networks:
+  migrations:
+    external: true
+
+services:
+  db-migrate:
+    image: redgate/flyway:10.11.0
+    networks:
+      - migrations
+    volumes:
+      - ./db/js:/flyway/sql
+      - ./db/config/local:/flyway/conf
+    command: migrate info -connectRetries=20
+    env_file:
+      - ./docker-compose.migrate.env
+   
