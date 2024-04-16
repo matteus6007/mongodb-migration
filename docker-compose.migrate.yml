@@ -15,4 +15,4 @@ services:
     command: migrate info -connectRetries=20
     env_file:
       - ./docker-compose.migrate.env
-       
+   
